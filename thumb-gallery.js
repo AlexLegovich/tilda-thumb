@@ -1,92 +1,115 @@
-
-function setThumbImages(data) {
-  const thumbnails = document.querySelectorAll('.thumb-image ')
-  thumbnails.forEach((thumbnail, index) => {
-      thumbnail.style.backgroundImage = `url(${data[index].image})`
-      thumbnail.style.backgroundSize = 'cover'
-      thumbnail.style.backgroundPosition = 'center'
+    //добавляем изображения в тамбнэйлы
     
+    function setThumbImages(data) {
+  const thumbnails = document.querySelectorAll('.thumb-image .tn-atom ')
+  thumbnails.forEach((thumbnail, index) => {
+    thumbnail.style.backgroundImage = `url(${data[index].image})`
+    thumbnail.style.backgroundSize = 'cover'
+    thumbnail.style.backgroundPosition = 'center'
   })
 }
 setThumbImages(data)
 
-function setMainImage(data, index) {
-  const mainImage = document.querySelector('.main-image')
+
+//главное фото
+
+function setMainImage(data,index) {
+  const mainImage = document.querySelector('.main-image .tn-atom');
   mainImage.style.backgroundImage = `url(${data[index].image})`
   mainImage.style.backgroundSize = 'cover'
   mainImage.style.backgroundPosition = 'center'
 }
 
-setMainImage(data, activeMain)
-
-function setDataThumnails(data) {
-  const thumbnails = document.querySelectorAll('.thumb-image ')
-  thumbnails.forEach((thumbnail, index) => {
+setMainImage(data,activeThumb)
+    
+    
+ //формируем дата аттрибут
+ 
+    function setDataThumbnails(data){
+  const thumbnails = document.querySelectorAll('.thumb-image .tn-atom')
+  thumbnails.forEach((thumbnail, index)=>{
     thumbnail.dataset.title = data[index].name
   })
 }
 
-setDataThumnails(data)
+setDataThumbnails(data)
 
-function setMainTitle(data, index) {
-  const mainTitle = document.querySelector('.main__title')
+
+//формируем заголовок
+
+function setMainTitle(data,index){
+  const mainTitle = document.querySelector('.main-title .tn-atom')
   mainTitle.textContent = data[index].name
-}
-
-setMainTitle(data, 0)
-
-function setmainText(data, index) {
-  const mainText = document.querySelector('.main__text')
+ }
+ 
+ setMainTitle(data,activeThumb)
+ 
+ //формируем текст
+ function setmainText(data, index){
+  const mainText = document.querySelector('.main-text .tn-atom')
   mainText.textContent = data[index].text
 }
 
-setmainText(data, 0)
-
-function updateTitle(thumbnail) {
-  const mainTitle = document.querySelector('.main__title')
-  mainTitle.textContent = thumbnail.dataset.title
+setmainText(data,activeThumb)
+ 
+ 
+ //обновление заголовка
+ function updateTitle(thumbnail) {
+  const mainTitle = document.querySelector('.main-title .tn-atom');
+  mainTitle.textContent = thumbnail.dataset.title;
 }
 
-function updateText(thumbnail, data, index) {
-  const mainText = document.querySelector('.main__text')
+//обновление текста
+function updateText(thumbnail,data,index){
+  const mainText = document.querySelector('.main-text .tn-atom')
   mainText.textContent = data[index].text
 }
 
-function changeImage() {
-  let isAnimating = false
 
-  const thumbnails = document.querySelectorAll('.thumb-image')
-  const mainImage = document.querySelector('.main-image')
-  const mainContent = document.querySelector('.main__content')
+//главная функция
 
-  activeThumb.classList.add('active')
-  updateTitle(activeThumb)
 
-  thumbnails.forEach((thumbnail, index) => {
-    thumbnail.addEventListener('click', () => {
+
+function changeImage(){
+    let isAnimating = false
+
+  const thumbnails = document.querySelectorAll('.thumb-image .tn-atom')
+  const mainImage = document.querySelector('.main-image .tn-atom');
+  const mainTitle = document.querySelector('.main-title .tn-atom');
+  const mainText = document.querySelector('.main-text .tn-atom')
+
+  thumbnails[activeThumb].classList.add('active');
+  updateTitle(thumbnails[activeThumb]);
+
+  thumbnails.forEach((thumbnail,index)=>{
+    thumbnail.addEventListener('click',()=>{
       if (isAnimating || thumbnail.classList.contains('active')) {
         return
       }
-
-      isAnimating = true
-
-      thumbnails.forEach((el) => el.classList.remove('active'))
-      mainImage.style.backgroundImage = thumbnail.style.backgroundImage
+      
+            isAnimating = true;
+      thumbnails.forEach((el)=> el.classList.remove('active'))
+      mainImage.style.backgroundImage = thumbnail.style.backgroundImage;
       thumbnail.classList.add('active')
-      mainContent.classList.add('animate')
       mainImage.classList.add('animate')
+      mainTitle.classList.add('animate')
+      mainText.classList.add('animate')
 
       setTimeout(() => {
-        mainContent.classList.remove('animate')
         mainImage.classList.remove('animate')
+        mainTitle.classList.remove('animate')
+        mainText.classList.remove('animate')
         updateTitle(thumbnail)
-        updateText(thumbnail, data, index)
-       setTimeout(() => {
+        updateText(thumbnail, data, index);
+               setTimeout(() => {
         isAnimating = false
        }, blockTime);
-      }, transitionTime)
+      }, transitionTime);
+      
     })
   })
+
 }
 
 changeImage()
+
